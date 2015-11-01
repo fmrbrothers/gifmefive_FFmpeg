@@ -1,0 +1,46 @@
+diff --git a/configure b/configure
+index 618dfab..c9efa58 100755
+--- a/configure
++++ b/configure
+@@ -1207,9 +1207,15 @@ require_pkg_config(){
+ 
+ require_libfreetype(){
+     log require_libfreetype "$@"
++    log require_libfreetype DISABLE FVE
++}
++
++require_libfreetype_default(){
++    log require_libfreetype "$@"
+     pkg="freetype2"
++    echo "check_cmd $pkg_config --exists --print-errors $pkg"
+     check_cmd $pkg_config --exists --print-errors $pkg \
+-      || die "ERROR: $pkg not found"
++      || die "PATATE: $pkg not found"
+     pkg_cflags=$($pkg_config --cflags $pkg_config_flags $pkg)
+     pkg_libs=$($pkg_config --libs $pkg_config_flags $pkg)
+     {
+@@ -1225,6 +1231,7 @@ require_libfreetype(){
+     add_extralibs $(get_safe ${pkg}_libs)
+ }
+ 
++
+ hostcc_e(){
+     eval printf '%s\\n' $HOSTCC_E
+ }
+@@ -2723,10 +2730,13 @@ SLIBPREF="lib"
+ SLIBSUF=".so"
+ SLIBNAME='$(SLIBPREF)$(FULLNAME)$(SLIBSUF)'
+ SLIBNAME_WITH_VERSION='$(SLIBNAME).$(LIBVERSION)'
+-SLIBNAME_WITH_MAJOR='$(SLIBNAME).$(LIBMAJOR)'
++#SLIBNAME_WITH_MAJOR='$(SLIBNAME).$(LIBMAJOR)'
++SLIBNAME_WITH_MAJOR='$(SLIBPREF)$(FULLNAME)-$(LIBMAJOR)$(SLIBSUF)'
+ LIB_INSTALL_EXTRA_CMD='$$(RANLIB) "$(LIBDIR)/$(LIBNAME)"'
+-SLIB_INSTALL_NAME='$(SLIBNAME_WITH_VERSION)'
+-SLIB_INSTALL_LINKS='$(SLIBNAME_WITH_MAJOR) $(SLIBNAME)'
++#SLIB_INSTALL_NAME='$(SLIBNAME_WITH_VERSION)'
++SLIB_INSTALL_NAME='$(SLIBNAME_WITH_MAJOR)'
++#SLIB_INSTALL_LINKS='$(SLIBNAME_WITH_MAJOR) $(SLIBNAME)'
++SLIB_INSTALL_LINKS='$(SLIBNAME)'
+ 
+ asflags_filter=echo
+ cflags_filter=echo
