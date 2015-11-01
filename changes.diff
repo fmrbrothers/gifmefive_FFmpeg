@@ -1,8 +1,8 @@
 diff --git a/configure b/configure
-index 618dfab..c9efa58 100755
+index 618dfab..f7f2072 100755
 --- a/configure
 +++ b/configure
-@@ -1207,9 +1207,15 @@ require_pkg_config(){
+@@ -1207,7 +1207,13 @@ require_pkg_config(){
  
  require_libfreetype(){
      log require_libfreetype "$@"
@@ -14,11 +14,8 @@ index 618dfab..c9efa58 100755
      pkg="freetype2"
 +    echo "check_cmd $pkg_config --exists --print-errors $pkg"
      check_cmd $pkg_config --exists --print-errors $pkg \
--      || die "ERROR: $pkg not found"
-+      || die "PATATE: $pkg not found"
+       || die "ERROR: $pkg not found"
      pkg_cflags=$($pkg_config --cflags $pkg_config_flags $pkg)
-     pkg_libs=$($pkg_config --libs $pkg_config_flags $pkg)
-     {
 @@ -1225,6 +1231,7 @@ require_libfreetype(){
      add_extralibs $(get_safe ${pkg}_libs)
  }
